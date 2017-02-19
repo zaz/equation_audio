@@ -46,11 +46,31 @@
 			playSound(generateSound(equation))
 		})
 	</script>
+	<style>
+	html, body { height: 100% }
+	body {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+		margin: 0;
+	}
+	form {
+		width: 100%;
+	}
+	textarea {
+		font-size: 20px;
+		width: 100%;
+		height: 1.2em;
+		padding: .6em 0;
+		text-align: center;
+		border: 0;
+	}
+	</style>
 </head>
 <body>
 	<form>
-		Volume: <input type="range" value="3" max="100" min="0"><br>
-		Equation: <textarea>.2 (sin(t*440*pi*2) * sin(t*400*pi*2))</textarea><br>
+		<textarea>.2 sin(t*440*pi*2)</textarea><br>
 	</form>
 </body>
 </html>
