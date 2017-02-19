@@ -20,21 +20,30 @@
 			source.start(0)
 		}
 
-		$( () => {
-			let expression = $("form textarea")
-			expression.change(() => {
-				console.log(expression.val())
-			})
-
-			console.log(expression.val())
-			let equation = math.compile(expression.val())
-
+		generateSound = equation => {
 			let arr = new Float32Array(sRate * seconds)
 			for (let i = 0; i < sRate * seconds; i++) {
 				arr[i] = equation.eval({t: i / sRate}) * volume
 			}
+			return arr
+		}
 
-			playSound(arr)
+		$( () => {
+			let expression = $("form textarea")
+
+			expression.change(() => {
+				try {
+					let equation = math.compile(expression.val())
+					expression.css("background", "inherit")
+					playSound(generateSound(equation))
+				} catch(err) {
+					console.log(err)
+					expression.css("background", "red")
+				}
+			})
+
+			let equation = math.compile(expression.val())
+			playSound(generateSound(equation))
 		})
 	</script>
 </head>
