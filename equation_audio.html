@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.9.2/math.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script>
+		window.AudioContext = window.AudioContext || window.webkitAudioContext
+
+		let context = new AudioContext()
+		let sRate = context.sampleRate
+		let volume = 1
+		let seconds = 6
+
+		playSound = buf => {
+			let buffer = context.createBuffer(1, buf.length, sRate)
+			buffer.copyToChannel(buf, 0)
+			let source = context.createBufferSource()
+			source.buffer = buffer
+			source.connect(context.destination)
+			source.start(0)
+		}
+
+		$( () => {
+			let expression = $("form textarea")
+			expression.change(() => {
+				console.log(expression.val())
+			})
+
+			console.log(expression.val())
+			let equation = math.compile(expression.val())
+
+			let arr = new Float32Array(sRate * seconds)
+			for (let i = 0; i < sRate * seconds; i++) {
+				arr[i] = equation.eval({t: i / sRate}) * volume
+			}
+
+			playSound(arr)
+		})
+	</script>
+</head>
+<body>
+	<form>
+		Volume: <input type="range" value="3" max="100" min="0"><br>
+		Equation: <textarea>.2 (sin(t*440*pi*2) * sin(t*400*pi*2))</textarea><br>
+	</form>
+</body>
+</html>
