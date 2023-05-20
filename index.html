@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
 <head>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.9.2/math.min.js"></script>
-	<script src="https://code.jquery.com/jquery-3.6.3.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js"></script>
 	<script>
 		window.AudioContext = window.AudioContext || window.webkitAudioContext
 
@@ -23,7 +23,7 @@
 		generateSound = equation => {
 			let arr = new Float32Array(sRate * seconds)
 			for (let i = 0; i < sRate * seconds; i++) {
-				arr[i] = equation.eval({t: i / sRate}) * volume
+				arr[i] = equation.evaluate({t: i / sRate}) * volume
 			}
 			return arr
 		}
