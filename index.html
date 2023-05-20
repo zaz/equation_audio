@@ -39,6 +39,7 @@
 				try {
 					output.html(MathJax.tex2svg(math.parse(expression.val()).toTex()))
 					expression.css("background", "inherit")
+					$(location).prop('hash', encodeURI(expression.val()))
 				} catch (err) {
 					console.warn("Invalid mathematical expression")
 					expression.css("background", "rgba(192,0,0,0.2)")
