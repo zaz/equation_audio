@@ -31,7 +31,7 @@
 		$( () => {
 			let expression = $("form textarea")
 
-			expression.on('keypress', e => {
+			expression.keypress( e => {
 				if (e.which != 13) { return }  // do nothing unless it's the Enter key
 				try {
 					let equation = math.compile(expression.val())
