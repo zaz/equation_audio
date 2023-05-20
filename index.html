@@ -32,6 +32,7 @@
 		$( () => {
 			let expression = $("form textarea")
 			let output = $("form output")
+			let hash = decodeURI($(location).prop('hash').substr(1))
 
 			typesetEquation = () => {
 				// TODO consider using tex2svgPromise instead
@@ -65,6 +66,10 @@
 					typesetEquation()
 				}
 			})
+
+			if (hash) {
+				expression.text(hash)
+			}
 
 			typesetEquation()
 		})
