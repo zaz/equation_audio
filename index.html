@@ -2,6 +2,7 @@
 <html>
 <head>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js"></script>
 	<script>
 		window.AudioContext = window.AudioContext || window.webkitAudioContext
@@ -30,18 +31,32 @@
 
 		$( () => {
 			let expression = $("form textarea")
+			let output = $("form output")
 
-			expression.keypress( e => {
-				if (e.which != 13) { return }  // do nothing unless it's the Enter key
-				try {
-					let equation = math.compile(expression.val())
-					expression.css("background", "inherit")
-					playSound(generateSound(equation))
-				} catch(err) {
-					console.log(err)
-					expression.css("background", "#C00000")
+			expression.keydown( e => {
+				// if it's the Enter key
+				if (e.key === "Enter") {
+					try {
+						let equation = math.compile(expression.val())
+						expression.css("background", "inherit")
+						playSound(generateSound(equation))
+					} catch(err) {
+						console.error("Invalid mathematical expression")
+						expression.css("background", "#C00000")
+					}
+					e.preventDefault()  // do not insert a newline
 				}
-				e.preventDefault()
+			})
+			expression.keyup( e => {
+				// if it's not the Enter key
+				if (e.key !== "Enter") {
+					// TODO consider using tex2svgPromise instead
+					try {
+						output.html(MathJax.tex2svg(math.parse(expression.val()).toTex()))
+					} catch (err) {
+						console.warn("Invalid mathematical expression")
+					}
+				}
 			})
 		})
 	</script>
@@ -85,6 +100,7 @@
 			Enter the equation for a wave below, then press <kbd>Enter</kbd> to play that wave as audio.
 		</p>
 		<textarea autofocus>.2 sin(t*440*pi*2)</textarea><br>
+		<output></output>
 	</form>
 </body>
 </html>
