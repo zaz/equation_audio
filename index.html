@@ -42,7 +42,7 @@
 						playSound(generateSound(equation))
 					} catch(err) {
 						console.error("Invalid mathematical expression")
-						expression.css("background", "#C00000")
+						expression.css("background", "rgba(192,0,0,0.6)")
 					}
 					e.preventDefault()  // do not insert a newline
 				}
@@ -53,8 +53,10 @@
 					// TODO consider using tex2svgPromise instead
 					try {
 						output.html(MathJax.tex2svg(math.parse(expression.val()).toTex()))
+						expression.css("background", "inherit")
 					} catch (err) {
 						console.warn("Invalid mathematical expression")
+						expression.css("background", "rgba(192,0,0,0.2)")
 					}
 				}
 			})
