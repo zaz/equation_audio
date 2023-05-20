@@ -33,6 +33,17 @@
 			let expression = $("form textarea")
 			let output = $("form output")
 
+			typesetEquation = () => {
+				// TODO consider using tex2svgPromise instead
+				try {
+					output.html(MathJax.tex2svg(math.parse(expression.val()).toTex()))
+					expression.css("background", "inherit")
+				} catch (err) {
+					console.warn("Invalid mathematical expression")
+					expression.css("background", "rgba(192,0,0,0.2)")
+				}
+			}
+
 			expression.keydown( e => {
 				// if it's the Enter key
 				if (e.key === "Enter") {
@@ -47,17 +58,11 @@
 					e.preventDefault()  // do not insert a newline
 				}
 			})
+
 			expression.keyup( e => {
 				// if it's not the Enter key
 				if (e.key !== "Enter") {
-					// TODO consider using tex2svgPromise instead
-					try {
-						output.html(MathJax.tex2svg(math.parse(expression.val()).toTex()))
-						expression.css("background", "inherit")
-					} catch (err) {
-						console.warn("Invalid mathematical expression")
-						expression.css("background", "rgba(192,0,0,0.2)")
-					}
+					typesetEquation()
 				}
 			})
 		})
